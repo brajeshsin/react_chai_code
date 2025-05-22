@@ -10,7 +10,7 @@ export function App() {
         console.log(data, ">>>>>>>>");
         setMessage(data);
       })
-      .catch(() => setMessage("failed"));
+      .catch(() => setMessage("faileddd"));
   }, []);
 
   return (
