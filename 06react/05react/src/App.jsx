@@ -16,7 +16,7 @@ export function App() {
   return (
     <div>
       <h1>Welcome to my code....</h1>
-      <p>Learning react from scratch..</p>
+      <p>Learning react from scratch</p>
 
       {message.map((mydata) => (
         <h2 key={mydata.id}>{mydata.title}</h2>
