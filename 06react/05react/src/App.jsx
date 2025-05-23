@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+// import Order from "./Order";
+import AllChai from "./AllChai";
 
 export function App() {
   const [message, setMessage] = useState(1);
@@ -18,14 +20,17 @@ export function App() {
   }, []);
 
   return (
-    <div>
-      <h1>Welcome to my code....</h1>
-      <p>Learning react from scratch</p>
-      <h2>{message}</h2>
+    <>
+      <div>
+        <h1>Welcome to my code....</h1>
+        <p>Learning react from scratch</p>
+        <h2>{message}</h2>
 
-      {/* {message.map((mydata) => (
+        {/* {message.map((mydata) => (
         <h2 key={mydata.id}>{mydata.title}</h2>
       ))} */}
-    </div>
+      </div>
+      <AllChai />
+    </>
   );
 }
