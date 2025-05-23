@@ -9,7 +9,7 @@ export default function ChaiMenu() {
       .then((res) => res.json())
       .then((data) => setMenu(data))
       .catch((err) => setError("Failed to fetch data"));
-    console.log(menu, "menu");
+    // console.log(menu, "menu");
   }, []);
 
   return (
@@ -19,7 +19,7 @@ export default function ChaiMenu() {
 
       <ul>
         {menu.map((chai) => {
-          console.log(chai, "this is chai data");
+          // console.log(chai, "this is chai data");
           return (
             <li key={chai.id}>{chai.title ? chai.title : "Unknown chai"}</li>
           );

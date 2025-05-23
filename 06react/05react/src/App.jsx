@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-// import Order from "./Order";
+import Order from "./Order";
 import AllChai from "./AllChai";
+import useSpecialHook from "./hooks/useSpecialHook";
 
 export function App() {
+  const { user, loading, error } = useSpecialHook();
   const [message, setMessage] = useState(1);
 
   // useEffect(() => {
@@ -14,6 +16,8 @@ export function App() {
   //     })
   //     .catch(() => setMessage("faileddd"));
   // }, []);
+
+  // console.log(user, "user");
 
   useEffect(() => {
     setMessage((prev) => prev + 1);
@@ -30,7 +34,18 @@ export function App() {
         <h2 key={mydata.id}>{mydata.title}</h2>
       ))} */}
       </div>
+      <Order />
       <AllChai />
+      {user &&
+        user.map((data) => {
+          console.log(data, ">>>>>>");
+
+          return (
+            <div key={data.id}>
+              <h3>{data.name}</h3>
+            </div>
+          );
+        })}
     </>
   );
 }
