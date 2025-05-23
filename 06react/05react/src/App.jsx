@@ -34,8 +34,12 @@ export function App() {
         <h2 key={mydata.id}>{mydata.title}</h2>
       ))} */}
       </div>
-      <Order />
-      <AllChai />
+      {/* <Order />
+      <AllChai /> */}
+
+      {loading && <p>Loading user...</p>}
+      {error && <p>Error:{error}</p>}
+
       {user &&
         user.map((data) => {
           console.log(data, ">>>>>>");
