@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Order from "./Order";
 import AllChai from "./AllChai";
 import useSpecialHook from "./hooks/useSpecialHook";
+import ContactForm from "./ContactForm";
 
 export function App() {
   const { user, loading, error } = useSpecialHook();
@@ -50,6 +51,7 @@ export function App() {
             </div>
           );
         })}
+      <ContactForm />
     </>
   );
 }
