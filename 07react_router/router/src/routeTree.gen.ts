@@ -8,13 +8,27 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as LearnroutImport } from './routes/learn_rout'
+import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as ProductPidImport } from './routes/Product.$pid'
+
+// Create Virtual Routes
+
+const ProductsLazyImport = createFileRoute('/Products')()
 
 // Create/Update Routes
+
+const ProductsLazyRoute = ProductsLazyImport.update({
+  id: '/Products',
+  path: '/Products',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/Products.lazy').then((d) => d.Route))
 
 const LearnroutRoute = LearnroutImport.update({
   id: '/learn_rout',
@@ -22,9 +36,21 @@ const LearnroutRoute = LearnroutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AboutRoute = AboutImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProductPidRoute = ProductPidImport.update({
+  id: '/Product/$pid',
+  path: '/Product/$pid',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +65,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
     '/learn_rout': {
       id: '/learn_rout'
       path: '/learn_rout'
       fullPath: '/learn_rout'
       preLoaderRoute: typeof LearnroutImport
+      parentRoute: typeof rootRoute
+    }
+    '/Products': {
+      id: '/Products'
+      path: '/Products'
+      fullPath: '/Products'
+      preLoaderRoute: typeof ProductsLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/Product/$pid': {
+      id: '/Product/$pid'
+      path: '/Product/$pid'
+      fullPath: '/Product/$pid'
+      preLoaderRoute: typeof ProductPidImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +100,58 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/learn_rout': typeof LearnroutRoute
+  '/Products': typeof ProductsLazyRoute
+  '/Product/$pid': typeof ProductPidRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/learn_rout': typeof LearnroutRoute
+  '/Products': typeof ProductsLazyRoute
+  '/Product/$pid': typeof ProductPidRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/learn_rout': typeof LearnroutRoute
+  '/Products': typeof ProductsLazyRoute
+  '/Product/$pid': typeof ProductPidRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/learn_rout'
+  fullPaths: '/' | '/about' | '/learn_rout' | '/Products' | '/Product/$pid'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/learn_rout'
-  id: '__root__' | '/' | '/learn_rout'
+  to: '/' | '/about' | '/learn_rout' | '/Products' | '/Product/$pid'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/learn_rout'
+    | '/Products'
+    | '/Product/$pid'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   LearnroutRoute: typeof LearnroutRoute
+  ProductsLazyRoute: typeof ProductsLazyRoute
+  ProductPidRoute: typeof ProductPidRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   LearnroutRoute: LearnroutRoute,
+  ProductsLazyRoute: ProductsLazyRoute,
+  ProductPidRoute: ProductPidRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +165,26 @@ export const routeTree = rootRoute
       "filePath": "__root.jsx",
       "children": [
         "/",
-        "/learn_rout"
+        "/about",
+        "/learn_rout",
+        "/Products",
+        "/Product/$pid"
       ]
     },
     "/": {
       "filePath": "index.jsx"
     },
+    "/about": {
+      "filePath": "about.jsx"
+    },
     "/learn_rout": {
       "filePath": "learn_rout.jsx"
+    },
+    "/Products": {
+      "filePath": "Products.lazy.jsx"
+    },
+    "/Product/$pid": {
+      "filePath": "Product.$pid.jsx"
     }
   }
 }
