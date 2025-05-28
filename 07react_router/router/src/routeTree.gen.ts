@@ -15,7 +15,9 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as LearnroutImport } from './routes/learn_rout'
 import { Route as AboutImport } from './routes/about'
+import { Route as AppRouteImport } from './routes/app/route'
 import { Route as IndexImport } from './routes/index'
+import { Route as AppDashboardImport } from './routes/app/dashboard'
 import { Route as ProductPidImport } from './routes/Product.$pid'
 
 // Create Virtual Routes
@@ -42,10 +44,22 @@ const AboutRoute = AboutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AppRouteRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AppDashboardRoute = AppDashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRouteRoute,
 } as any)
 
 const ProductPidRoute = ProductPidImport.update({
@@ -63,6 +77,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRoute
     }
     '/about': {
@@ -93,53 +114,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductPidImport
       parentRoute: typeof rootRoute
     }
+    '/app/dashboard': {
+      id: '/app/dashboard'
+      path: '/dashboard'
+      fullPath: '/app/dashboard'
+      preLoaderRoute: typeof AppDashboardImport
+      parentRoute: typeof AppRouteImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface AppRouteRouteChildren {
+  AppDashboardRoute: typeof AppDashboardRoute
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppDashboardRoute: AppDashboardRoute,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/learn_rout': typeof LearnroutRoute
   '/Products': typeof ProductsLazyRoute
   '/Product/$pid': typeof ProductPidRoute
+  '/app/dashboard': typeof AppDashboardRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/learn_rout': typeof LearnroutRoute
   '/Products': typeof ProductsLazyRoute
   '/Product/$pid': typeof ProductPidRoute
+  '/app/dashboard': typeof AppDashboardRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/learn_rout': typeof LearnroutRoute
   '/Products': typeof ProductsLazyRoute
   '/Product/$pid': typeof ProductPidRoute
+  '/app/dashboard': typeof AppDashboardRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/learn_rout' | '/Products' | '/Product/$pid'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/learn_rout' | '/Products' | '/Product/$pid'
-  id:
-    | '__root__'
+  fullPaths:
     | '/'
+    | '/app'
     | '/about'
     | '/learn_rout'
     | '/Products'
     | '/Product/$pid'
+    | '/app/dashboard'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/app'
+    | '/about'
+    | '/learn_rout'
+    | '/Products'
+    | '/Product/$pid'
+    | '/app/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/about'
+    | '/learn_rout'
+    | '/Products'
+    | '/Product/$pid'
+    | '/app/dashboard'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRouteRoute: typeof AppRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   LearnroutRoute: typeof LearnroutRoute
   ProductsLazyRoute: typeof ProductsLazyRoute
@@ -148,6 +211,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRouteRoute: AppRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   LearnroutRoute: LearnroutRoute,
   ProductsLazyRoute: ProductsLazyRoute,
@@ -165,6 +229,7 @@ export const routeTree = rootRoute
       "filePath": "__root.jsx",
       "children": [
         "/",
+        "/app",
         "/about",
         "/learn_rout",
         "/Products",
@@ -173,6 +238,12 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.jsx"
+    },
+    "/app": {
+      "filePath": "app/route.jsx",
+      "children": [
+        "/app/dashboard"
+      ]
     },
     "/about": {
       "filePath": "about.jsx"
@@ -185,6 +256,10 @@ export const routeTree = rootRoute
     },
     "/Product/$pid": {
       "filePath": "Product.$pid.jsx"
+    },
+    "/app/dashboard": {
+      "filePath": "app/dashboard.jsx",
+      "parent": "/app"
     }
   }
 }
