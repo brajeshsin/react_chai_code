@@ -3,6 +3,7 @@ import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { useNotification } from "../context/NotificationContext";
 import { useCartStore } from "../zustand/cartStore";
+import { useCartStorePersist } from "../zustand/cartStorePersist";
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -12,6 +13,7 @@ function RootComponent() {
   const { count, addNotification, resetNotification } = useNotification();
   // const cartCount = useCartStore((state) => state.cart.length);
   const { cart } = useCartStore();
+  const { cartt } = useCartStorePersist();
   return (
     <React.Fragment>
       <div>Hello "__root"!</div>
@@ -59,6 +61,7 @@ function RootComponent() {
       <br />
       <br />
       <h1>{cart.length}</h1>
+      <h6>{cartt}</h6>
       <Outlet />
       <TanStackRouterDevtools />
     </React.Fragment>
