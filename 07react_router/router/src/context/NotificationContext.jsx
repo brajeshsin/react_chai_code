@@ -2,6 +2,8 @@ import { createContext, useContext, useState } from "react";
 
 const NotificationContext = createContext();
 
+// console.log(NotificationContext, ">>>>");
+
 export function NotificationProvider({ children }) {
   const [count, setCount] = useState(6);
 
